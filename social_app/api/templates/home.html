@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <h1> Posts </h1>
+    <br>
+    <div class="container" style="flex-direction: row; display: flex;justify-content: space-between">
+        <div class="c2" style="display: flex; flex-direction: column;">
+        {% for post in posts %}
+            <div class="card"  style="max-height: 150px; margin-bottom: 35px; max-width: 500px;">
+                <div class="card-header"><b>{{ post.user.username }}</b></div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ post.body }}</h5>
+                    <p class="card-text">{{ post.created_data }}</p>
+                    <br>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+        {% if form %}
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+              <button type="submit" class="btn btn-secondary">Post</button>
+            </form>
+        {% endif %}
+
+    </div>
+{% endblock %}

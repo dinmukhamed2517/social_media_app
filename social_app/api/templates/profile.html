@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+{% if profile %}
+    <h1>{{ profile.user.username }}'s profile</h1>
+    <br>
+    <form method="post">
+        {% csrf_token %}
+        {% if profile in user.profile.follows.all %}
+            <button class="btn btn-outline-danger" name="button-follow"
+                    value="unfollow" type="submit">Unfollow {{profile.user.username}}</button>
+        {% else %}
+            <button class="btn btn-outline-success" name="button-follow",
+                    value="follow", type="submit">Follow {{profile.user.username}}</button>
+        {% endif %}
+    </form>
+    <br>
+    <h2>Follows</h2>
+    <div class="container" style = "display: flex; flex-direction: row; margin-bottom: 50px;" >
+    {% for following in profile.follows.all %}
+        <a href="{% url 'profile' following.user.id %}" style="text-decoration: none">
+            <div class="card" style = "max-width: 200px; margin-right: 50px">
+                  <img src="{% static 'images/profile_blank.jpeg' %}" class="card-img-top" alt="...">
+                  <div class="card-body">
+                    <h5 class="card-title">{{ following }}</h5>
+                      <p class="card-text"> <b>Last online: </b> {{ following.last_online }}</p>
+                  </div>
+            </div>
+        </a>
+    {% endfor %}
+    </div>
+
+        <h2>Subscribers</h2>
+    <div class="container2" style="display: flex; flex-direction: row">
+        {% for follower in profile.followed_by.all %}
+            <a href="{% url 'profile' follower.user.id %}" style="text-decoration: none">
+              <div class="card" style = "max-width: 200px; margin-right: 50px">
+                  <img src="{% static 'images/profile_blank.jpeg' %}" class="card-img-top" alt="...">
+                  <div class="card-body">
+                    <h5 class="card-title">{{ follower }}</h5>
+                      <p class="card-text"> <b>Last online: </b> {{ follower.last_online }}</p>
+                  </div>
+            </div>
+            </a>
+        {% endfor %}
+    </div>
+
+
+
+{% endif %}
+{% endblock %}
